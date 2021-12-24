@@ -310,10 +310,7 @@
         let username = "{{username}}"
         let spaces = document.getElementsByClassName('space');
 
-        var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        // var chat_socket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/chat" + window.location.pathname);
-        let url = ws_scheme + '://' + window.location.host + '/ws/'
-        console.log(url)
+        let url = "ws://127.0.0.1:8000/ws/";
         let ws = new WebSocket(`${url}play/${room_code}/${username}/`);
         let currentState = []
 
