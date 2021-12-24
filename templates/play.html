@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Play | {{room_code}}</title>
+
+
+</head>
+
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Catamaran:200");
+    @import url("https://fonts.googleapis.com/css?family=Quicksand");
+
+    /* General Styles */
+
+    * {
+        /*   box-sizing: border-box; */
+    }
+
+    body {
+        background-color: #eee;
+        color: #333;
+        font-family: "Catamaran", sans-serif;
+    }
+
+    .full-page {
+        box-sizing: border-box;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .flex-row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .flex-column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wrap {
+        flex-wrap: wrap;
+    }
+
+    /* Game Styles */
+
+    .game {
+        flex: 1 1 auto;
+        max-width: 400px;
+        border: 1px solid #ccc;
+    }
+
+    .game>div {
+        flex: 1 1 auto;
+        font-size: 1.1em;
+    }
+
+    /* Options */
+
+    #game_options {
+        flex: 1 1 auto;
+    }
+
+    #game_options>div {
+        flex: 1 1 auto;
+        min-width: 150px;
+    }
+
+    #player1type,
+    #player2type {
+        background-color: #bbb;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    #player1type>div,
+    #player2type>div {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .activetype {
+        background-color: #dbdbdb;
+    }
+
+    #player1type>div:hover,
+    #player2type>div:hover {
+        background-color: #fff;
+    }
+
+    .playername {
+        flex: 1 1 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ddd;
+        padding: 5px;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+    .playername:focus {
+        outline: none;
+        background-color: #ccc;
+    }
+
+    .options {
+        flex: 1 1 100%;
+    }
+
+    .options>div {
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .ailevel {
+        font-size: 0.9em;
+        flex: 1 1 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .ailevel>div {
+        padding: 4px;
+        color: #eee;
+        flex: 1 1 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .easyai {
+        background-color: #773;
+    }
+
+    .averageai {
+        background-color: #753;
+    }
+
+    .expertai {
+        background-color: #b43;
+    }
+
+    .startReset {
+        width: 100%;
+        cursor: pointer;
+        color: #eee;
+    }
+
+    .startReset>div {
+        padding: 7px;
+        font-size: 1.3em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #start {
+        flex: 3 1 auto;
+        min-width: 234px;
+        background-color: #575;
+    }
+
+    #start:hover {
+        background-color: #595;
+    }
+
+    #start:active {
+        background-color: #484;
+    }
+
+    .startactive {
+        background-color: #494;
+    }
+
+    #reset {
+        flex: 1 1 auto;
+        background-color: #655;
+    }
+
+    #reset:hover {
+        background-color: #855;
+    }
+
+    #reset:active {
+        background-color: #844;
+    }
+
+    .scoreboard {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+    }
+
+    .scoreboard>div {
+        flex: 1 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3px;
+    }
+
+    .activeplayer {
+        background-color: #248;
+    }
+
+    .boardcontainer {
+        width: 100%;
+        padding-top: 100%;
+        /* 1:1 Aspect Ratio */
+        position: relative;
+        /* If you want text inside of it */
+    }
+
+    .board {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-column-gap: 2px;
+        grid-row-gap: 2px;
+    }
+
+    .space {
+        background-color: #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Quicksand";
+        font-weight: 300;
+        font-size: 3em;
+    }
+
+    .space:hover {
+        background-color: #bbb;
+    }
+
+    .space:active {
+        background-color: #aaa;
+    }
+
+    .highlightVictory {
+        background-color: #388;
+    }
+
+    .tieboard {
+        background-color: #665;
+    }
+</style>
+
+<body class="bg-dark">
+
+    <div class="full-page" id="full-page">
+
+        <div class="game flex-column">
+
+
+            <div class="boardcontainer">
+                <div class="board">
+                    <div data-cell-index="0" class="space"></div>
+                    <div data-cell-index="1" class="space"></div>
+                    <div data-cell-index="2" class="space"></div>
+                    <div data-cell-index="3" class="space"></div>
+                    <div data-cell-index="4" class="space"></div>
+                    <div data-cell-index="5" class="space"></div>
+                    <div data-cell-index="6" class="space"></div>
+                    <div data-cell-index="7" class="space"></div>
+                    <div data-cell-index="8" class="space"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+    <script>
+        let MY_TURN = false
+        let ME = null
+        let room_code = "{{code}}"
+        let username = "{{username}}"
+        let spaces = document.getElementsByClassName('space');
+
+        let url = "ws://127.0.0.1:8000/ws/";
+        let ws = new WebSocket(`${url}play/${room_code}/${username}/`);
+        let currentState = []
+
+        ws.onopen = e => {
+            console.log(e)
+        }
+
+        ws.onclose = e => {
+            swal(`Connection Failed`, `Connection Failed, Please check your internet connection`, "error", {
+                button: "Ok ",
+
+            })
+        }
+
+        ws.onmessage = e => {
+            console.log(e)
+            data = JSON.parse(e.data)
+
+            if (data.type === 'start') {
+
+                console.log('in')
+                let payload = data.payload
+                if (payload.start) {
+                    Array.from(spaces).forEach(elm => {
+                        elm.innerHTML = ''
+                    })
+                    currentState = []
+                    if (payload.username !== username) {
+                        swal(`${payload.username} joined`, `Starting in 2 second, ${payload.turn === username ? 'Your' : 'Opponent\'s'} turn`, "info", {
+                            button: "Ok ",
+                            timer: 2000,
+
+                        })
+                    } else {
+                        swal(`Joining`, `Starting in 2 second, ${payload.turn === username ? 'Your' : 'Opponent\'s'} turn`, "info", {
+                            button: "Ok ",
+                            timer: 2000,
+
+                        })
+                    }
+                    if (payload.turn === username) {
+                        MY_TURN = true
+                        ME = 'X'
+                    } else {
+                        MY_TURN = false
+                        ME = 'O'
+                    }
+                }
+            }
+            else if (data.type === 'changeTurn') {
+                console.log('in')
+                if (ME === null) {
+                    ME = 'O'
+                }
+                let payload = data.payload
+                changeTurn(payload.turn)
+                setState(payload)
+            }
+            else if (data.type === 'win') {
+                setTimeout(() => {
+                    win(data.payload)
+                }, 600);
+            }
+            else if (data.type === 'restart') {
+                let payload = data.payload
+                if (payload.turn === username) {
+                    MY_TURN = true
+                    ME = 'X'
+                } else {
+                    MY_TURN = false
+                    ME = 'O'
+                }
+                swal.close()
+                restart(payload.turn)
+            }
+
+            else if (data.type === 'draw') {
+                draw()
+
+            }
+            else if (data.type === 'end') {
+                swal("Opponent Left", `Opponent Left!`, "warning", {
+                    button: "Ok ",
+                })
+            }
+            else if (data.type === 'room_full') {
+                swal("Room Full", `Already 2 people are playing in this room`, "error", {
+                    button: "Ok ",
+                })
+            }
+
+            else if (data.type === 'already_joined') {
+                swal("Already Joined", `Already joined`, "warning", {
+                    button: "Ok ",
+                })
+            }
+
+
+
+        }
+
+
+        function sendCurrentState() {
+            ws.send(JSON.stringify({ 'type': 'current_state', 'username': '{{username}}', currentState }))
+        }
+
+        function changeTurn(turn) {
+            if (turn === username) {
+                MY_TURN = true
+            } else {
+                MY_TURN = false
+            }
+        }
+
+        function setState(payload) {
+            if (payload.username !== username) {
+                Array.from(payload.state).forEach(i => {
+                    Array.from(spaces)[i].innerHTML = ME === 'X' ? 'O' : "X"
+                })
+            }
+        }
+        function restart(turn) {
+            Array.from(spaces).forEach(elm => {
+                elm.innerHTML = ''
+            })
+            currentState = []
+            swal("Restarting!", `Restarting in 2 seconds. ${turn}'s turn`, "warning", {
+                button: "Ok",
+                timer: 2000,
+            })
+        }
+        async function win(payload) {
+
+            if (payload.winner === username) {
+                console.log('winner')
+                await swal("Good job!", "You won", "success", {
+                    button: "Restart",
+                })
+                ws.send(JSON.stringify({ 'type': 'restart' }))
+
+
+            } else {
+                await swal("You Loos!", "Better luck next time", "warning", {
+                    button: "Restart",
+                })
+                ws.send(JSON.stringify({ 'type': 'restart' }))
+            }
+        }
+        async function draw() {
+
+            await swal("Good Play", `Game Draw`, "info", {
+                button: "Restart ",
+            })
+
+            ws.send(JSON.stringify({ 'type': 'restart' }))
+        }
+
+        Array.from(spaces).forEach(elm => {
+            elm.addEventListener('click', e => {
+                console.log(MY_TURN)
+                if (MY_TURN) {
+
+                    let cellIndex = e.currentTarget.getAttribute('data-cell-index')
+
+                    if (e.currentTarget.innerHTML === '') {
+                        e.currentTarget.innerHTML = ME
+                        currentState.push(parseInt(cellIndex))
+                        sendCurrentState()
+                    }
+                }
+            })
+        })
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>
